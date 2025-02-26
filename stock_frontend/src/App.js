@@ -14,11 +14,12 @@ function App() {
     future_predicted: []
   });
   const [loading, setLoading] = useState(true);
+  const [ticker, setTicker] = useState('TSLA'); // Default ticker
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/predict')
+  const fetchData = (selectedTicker) => {
+    setLoading(true);
+    axios.get(`http://localhost:5000/predict?ticker=${selectedTicker}`)
       .then(response => {
-        console.log('API Response:', response.data);
         setData(response.data);
         setLoading(false);
       })
@@ -26,9 +27,15 @@ function App() {
         console.error('Error fetching predictions:', error);
         setLoading(false);
       });
-  }, []);
+  };
 
-  console.log('Current State Data:', data);
+  useEffect(() => {
+    fetchData(ticker); // Fetch data on initial load and ticker change
+  }, [ticker]);
+
+  const handleTickerChange = (event) => {
+    setTicker(event.target.value);
+  };
 
   const isDataValid = data.historical_dates.length > 0 && data.future_dates.length > 0;
   const chartData = isDataValid ? {
@@ -63,13 +70,11 @@ function App() {
     ],
   } : { labels: [], datasets: [] };
 
-  console.log('Chart Data:', chartData);
-
   const options = {
     responsive: true,
     plugins: {
       legend: { position: 'top' },
-      title: { display: true, text: 'TSLA Stock Price: 90 Days Past + 30 Days Future' },
+      title: { display: true, text: `${ticker} Stock Price: 90 Days Past + 30 Days Future` },
     },
     scales: {
       x: { title: { display: true, text: 'Date' } },
@@ -80,6 +85,14 @@ function App() {
   return (
     <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
       <h1>Stock Price Prediction</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="tickerSelect">Select Stock: </label>
+        <select id="tickerSelect" value={ticker} onChange={handleTickerChange}>
+          <option value="TSLA">TSLA</option>
+          <option value="AAPL">AAPL</option>
+          <option value="NVDA">NVDA</option>
+        </select>
+      </div>
       {loading ? (
         <p>Loading...</p>
       ) : !isDataValid ? (
