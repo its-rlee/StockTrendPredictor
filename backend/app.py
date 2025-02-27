@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import joblib
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from tensorflow.keras.models import load_model
 from datetime import datetime, timedelta
 from flask_cors import CORS
@@ -65,7 +66,6 @@ def predict():
 
         latest_data, all_dates = get_latest_data(ticker)
         scaled_data = scalers[ticker].transform(latest_data.reshape(-1, 1))
-        lr_weight, lstm_weight = 0.5, 0.5
 
         # Historical predictions (last 90 days)
         historical_pred_lr, historical_pred_lstm = [], []
@@ -81,6 +81,15 @@ def predict():
             lstm_pred = models[ticker]["lstm"].predict(sequence_lstm, verbose=0).item()
             historical_pred_lr.append(lr_pred)
             historical_pred_lstm.append(lstm_pred)
+
+        # Calculate weights based on historical data
+        historical_pred_lr = scalers[ticker].inverse_transform(np.array(historical_pred_lr).reshape(-1, 1)).flatten()
+        historical_pred_lstm = scalers[ticker].inverse_transform(np.array(historical_pred_lstm).reshape(-1, 1)).flatten()
+        lr_mse = mean_squared_error(latest_data[-past_days:], historical_pred_lr)
+        lstm_mse = mean_squared_error(latest_data[-past_days:], historical_pred_lstm)
+        total_mse = lr_mse + lstm_mse
+        lr_weight = 1 - (lr_mse / total_mse)
+        lstm_weight = 1 - (lstm_mse / total_mse)
 
         # Future predictions (next 30 days)
         last_sequence = prepare_sequence(scaled_data, len(latest_data) - lookback)
@@ -100,12 +109,8 @@ def predict():
             sequence_lstm[0, -1, 0] = weighted_pred
 
         # Inverse transform predictions
-        historical_pred_lr = scalers[ticker].inverse_transform(np.array(historical_pred_lr).reshape(-1, 1)).flatten()
-        historical_pred_lstm = scalers[ticker].inverse_transform(np.array(historical_pred_lstm).reshape(-1, 1)).flatten()
         future_pred_lr = scalers[ticker].inverse_transform(np.array(future_pred_lr).reshape(-1, 1)).flatten()
         future_pred_lstm = scalers[ticker].inverse_transform(np.array(future_pred_lstm).reshape(-1, 1)).flatten()
-
-        historical_pred_ensemble = lr_weight * historical_pred_lr + lstm_weight * historical_pred_lstm
         future_pred_ensemble = lr_weight * future_pred_lr + lstm_weight * future_pred_lstm
 
         # Prepare response
@@ -116,7 +121,7 @@ def predict():
         response = {
             "historical_dates": historical_dates,
             "historical_actual": actual_prices,
-            "historical_predicted": historical_pred_ensemble.tolist(),
+            "historical_predicted": (lr_weight * historical_pred_lr + lstm_weight * historical_pred_lstm).tolist(),
             "future_dates": future_dates,
             "future_predicted": future_pred_ensemble.tolist()
         }
