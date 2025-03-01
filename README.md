@@ -15,7 +15,7 @@ Git: To clone and manage the repository.
 # Setup Instructions
 1. Clone the Repository
 ```
-git clone https://github.com/your-username/stock_prediction.git
+git clone https://github.com/its-rlee/stock_prediction.git
 cd stock_prediction
 ```
 2. Backend Setup
