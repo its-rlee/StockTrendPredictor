@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
+import Header from './components/Header';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function App() {
@@ -83,8 +85,10 @@ function App() {
   };
 
   return (
+    
     <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <h1>Stock Price Prediction</h1>
+      <Header />
+      {/* <h1>Stock Price Prediction</h1> */}
       <div style={{ marginBottom: '20px' }}>
         <label htmlFor="tickerSelect">Select Stock: </label>
         <select id="tickerSelect" value={ticker} onChange={handleTickerChange}>
@@ -101,6 +105,7 @@ function App() {
         <Line data={chartData} options={options} />
       )}
     </div>
+    
   );
 }
 

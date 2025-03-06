@@ -1,0 +1,87 @@
+Folder PATH listing for volume OS
+Volume serial number is D6C8-7A5E
+C:.
+¦   AAPL_cache.pkl
+¦   file_structure.txt
+¦   NVDA_cache.pkl
+¦   README.md
+¦   requirements.txt
+¦   TSLA_cache.pkl
+¦   
++---backend
+¦   ¦   app.py
+¦   ¦   
+¦   +---__pycache__
+¦           backend.cpython-311.pyc
+¦           
++---data
+¦       example.csv
+¦       
++---models
+¦       AAPL_lr_model.pkl
+¦       AAPL_lstm_model.h5
+¦       AAPL_scaler.pkl
+¦       NVDA_lr_model.pkl
+¦       NVDA_lstm_model.h5
+¦       NVDA_scaler.pkl
+¦       TSLA_lr_model.pkl
+¦       TSLA_lstm_model.h5
+¦       TSLA_scaler.pkl
+¦       
++---notebooks
+¦   ¦   lr_model.joblib
+¦   ¦   lstm_model.keras
+¦   ¦   model_training.ipynb
+¦   ¦   model_training2.ipynb
+¦   ¦   
+¦   +---models
+¦           AAPL_lr_model.pkl
+¦           AAPL_lstm_model.h5
+¦           AAPL_scaler.pkl
+¦           NVDA_lr_model.pkl
+¦           NVDA_lstm_model.h5
+¦           NVDA_scaler.pkl
+¦           TSLA_lr_model.pkl
+¦           TSLA_lstm_model.h5
+¦           TSLA_scaler.pkl
+¦           
++---results
+¦       predictions.csv
+¦       
++---src
+¦       data_preprocessing.py
+¦       model.py
+¦       utils.py
+¦       
++---stock_frontend
+¦   ¦   .gitignore
+¦   ¦   package-lock.json
+¦   ¦   package.json
+¦   ¦   README.md
+¦   ¦   
+¦   +---public
+¦   ¦       favicon.ico
+¦   ¦       index.html
+¦   ¦       logo192.png
+¦   ¦       logo512.png
+¦   ¦       manifest.json
+¦   ¦       robots.txt
+¦   ¦       
+¦   +---src
+¦           App.css
+¦           App.js
+¦           App.test.js
+¦           index.css
+¦           index.js
+¦           logo.svg
+¦           reportWebVitals.js
+¦           setupTests.js
+¦           
++---tests
+¦       test_models.py
+¦       
++---website
+        app.js
+        index.html
+        styles.css
+        
