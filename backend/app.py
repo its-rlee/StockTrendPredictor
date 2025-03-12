@@ -3,15 +3,29 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import joblib
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error
 from tensorflow.keras.models import load_model
 from datetime import datetime, timedelta
 from flask_cors import CORS
 import os
 import pickle
+import requests
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+
+@app.route("/")
+def Home():
+    return "Welcome to the Stock Trend Predictor API!"
+
 CORS(app)
+
+
+# Load API keys from .env file
+load_dotenv()
+
+MARKETAUX_API_KEY = os.getenv("MARKETAUX_API_KEY")
+NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")
 
 # Parameters
 lookback = 200
@@ -126,6 +140,32 @@ def predict():
             "future_predicted": future_pred_ensemble.tolist()
         }
         return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/news', methods=['GET'])
+def get_news():
+    try:
+        if not MARKETAUX_API_KEY or not NEWSAPI_KEY:
+            return jsonify({"error": "Missing API keys"}), 500
+
+        yahoo_news_response = requests.get(
+            "https://api.marketaux.com/v1/news/all",
+            params={"api_token": MARKETAUX_API_KEY, "limit": 10, "sources": "yahoo.com"},
+        )
+
+        google_news_response = requests.get(
+            "https://newsapi.org/v2/top-headlines",
+            params={"apiKey": NEWSAPI_KEY, "sources": "google-news"},
+        )
+
+        yahoo_news = yahoo_news_response.json().get("data", [])
+        google_news = google_news_response.json().get("articles", [])
+        news = yahoo_news + google_news
+
+        return jsonify(news)
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
