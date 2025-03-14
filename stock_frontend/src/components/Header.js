@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import logo from '../../src/header_logo.png';
-import '../main.js';
 
 const Header = () => {
   const [isMobileNavVisible, setMobileNavVisible] = useState(false);
