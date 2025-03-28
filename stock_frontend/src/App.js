@@ -124,17 +124,20 @@ function App() {
               <div className="col-12 shadow-sm p-3 mb-5 bg-white rounded" style={{ marginBottom: '20px', marginTop: '20px' }}>
                 <div className="row">
                   <div className="col-12 col-md-4">
-                    <label style={{fontFamily: 'Poppins,sans-serif'}}>Select Stock:</label>
-                    <div className="button-group" style={{fontFamily: 'Poppins,sans-serif'}}>
+                    <label style={{ fontFamily: 'Poppins,sans-serif' }}>Select Stock:</label>
+                    <div className="button-group" style={{ fontFamily: 'Poppins,sans-serif' }}>
                       <button type="button" className={`btn m-1 ${ticker === 'TSLA' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('TSLA')}>Tesla</button>
                       <button type="button" className={`btn m-1 ${ticker === 'AAPL' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('AAPL')}>Apple</button>
                       <button type="button" className={`btn m-1 ${ticker === 'NVDA' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('NVDA')}>Nvidia</button>
+                      <button type="button" className={`btn m-1 ${ticker === 'AMZN' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('AMZN')}>Amazon</button>
+                      <button type="button" className={`btn m-1 ${ticker === 'GOOG' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('GOOGL')}>Google</button>
+                      <button type="button" className={`btn m-1 ${ticker === 'META' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('META')}>Meta</button>
                     </div>
                   </div>
 
                   <div className="col-12 col-md-6">
-                    <label style={{fontFamily: 'Poppins,sans-serif'}}>Select Prediction Period (Days):</label>
-                    <div className="button-group" style={{fontFamily: 'Poppins,sans-serif'}}>
+                    <label style={{ fontFamily: 'Poppins,sans-serif' }}>Select Prediction Period (Days):</label>
+                    <div className="button-group" style={{ fontFamily: 'Poppins,sans-serif' }}>
                       {[15, 30, 45, 60, 90].map((day) => (
                         <button
                           key={day}
@@ -152,8 +155,8 @@ function App() {
 
               {loading ? (
                 <div className="text-center pb-5">
-                  <div className="spinner-border" role="status" style={{fontFamily: 'Poppins,sans-serif', color: '#012970' }}>
-                    <span className="sr-only">Loading...</span>
+                  <div className="spinner-border" role="status" style={{ fontFamily: 'Poppins,sans-serif', color: '#012970' }}>
+                    <span className="sr-only"></span>
                   </div>
                   <p>Loading chart...</p>
                 </div>

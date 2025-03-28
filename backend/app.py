@@ -30,9 +30,8 @@ NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")
 # Parameters
 lookback = 200
 past_days = 90
-future_days = 30
 default_ticker = "TSLA"  # Default stock
-valid_tickers = ["TSLA", "AAPL", "NVDA"]  # Supported stocks
+valid_tickers = ["TSLA", "AAPL", "NVDA", "AMZN", "GOOG", "META"]  # Supported stocks
 
 # Load models and scalers at startup for all tickers
 models = {}
@@ -75,8 +74,17 @@ def prepare_sequence(scaled_data, start_idx):
 def predict():
     try:
         ticker = request.args.get('ticker', default_ticker).upper()
+        days = request.args.get('days', '30')  # Default to 30 if not provided
+
         if ticker not in valid_tickers:
             return jsonify({"error": f"Invalid ticker. Supported tickers: {valid_tickers}"}), 400
+        
+        try:
+            days = int(days)
+            if days not in [15, 30, 45, 60, 90]:
+                return jsonify({'error': 'Days must be 15, 30, 45, 60, or 90'}), 400
+        except ValueError:
+            return jsonify({'error': 'Days must be an integer'}), 400
 
         latest_data, all_dates = get_latest_data(ticker)
         scaled_data = scalers[ticker].transform(latest_data.reshape(-1, 1))
@@ -111,7 +119,7 @@ def predict():
         future_pred_lr, future_pred_lstm = [], []
         sequence, sequence_lstm = last_sequence.copy(), last_sequence_lstm.copy()
 
-        for _ in range(future_days):
+        for _ in range(days):
             lr_pred = models[ticker]["lr"].predict(sequence).item()
             lstm_pred = models[ticker]["lstm"].predict(sequence_lstm, verbose=0).item()
             weighted_pred = lr_weight * lr_pred + lstm_weight * lstm_pred
@@ -130,7 +138,7 @@ def predict():
         # Prepare response
         actual_prices = latest_data[-past_days:].tolist()
         historical_dates = all_dates[-past_days:]
-        future_dates = pd.date_range(start=datetime.today(), periods=future_days, freq='B').strftime('%Y-%m-%d').tolist()
+        future_dates = pd.date_range(start=datetime.today(), periods=days, freq='B').strftime('%Y-%m-%d').tolist()
 
         response = {
             "historical_dates": historical_dates,
