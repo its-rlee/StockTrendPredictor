@@ -168,6 +168,31 @@ def get_news():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/market_trend/<symbol>', methods=['GET'])
+def get_stock_data(symbol):
+    try:
+        stock = yf.Ticker(symbol)
+        stock_info = stock.history(period="5d")
+        
+        if len(stock_info) < 2:
+            return jsonify({'error': 'Not enough data available'}), 500
+        
+        price_today = stock_info['Close'].iloc[-1]
+        price_yesterday = stock_info['Close'].iloc[-2]
+        change = ((price_today - price_yesterday) / price_yesterday) * 100
+        
+        stock_data = {
+            'symbol': symbol,
+            'price': price_today,
+            'change': change,
+            'marketCap': stock.info['marketCap']
+        }
+        
+        return jsonify(stock_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
