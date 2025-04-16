@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../App.css'; 
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -40,9 +41,19 @@ const News = () => {
           ) : (
             news.map((article, index) => (
               <div key={index} className="news-article">
+                <img
+                  src={article.image || 'https://via.placeholder.com/150'}
+                  alt={article.title}
+                  className="img-fluid mb-3"
+                  style={{ maxHeight: '200px', objectFit: 'cover', width: '100%' }}
+                />
                 <h2>{article.title}</h2>
+                <small className="text-muted">{new Date(article.pubDate).toLocaleString()}</small>
                 <p>{article.description}</p>
-                <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+                <div>
+                  <a className='btn-primary' href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+
+                </div>
               </div>
             ))
           )}

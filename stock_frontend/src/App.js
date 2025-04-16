@@ -29,9 +29,12 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [ticker, setTicker] = useState('TSLA'); // Default ticker
   const [days, setDays] = useState(15); // Default prediction period (15 days)
+<<<<<<< Updated upstream
   const [selectedDays, setSelectedDays] = useState(15); // Track selected days
   const [selectedButton, setSelectedButton] = useState('TSLA'); // Default selected button
 
+=======
+>>>>>>> Stashed changes
 
   const fetchData = (selectedTicker, predictionDays) => {
     setLoading(true);
@@ -175,9 +178,38 @@ function App() {
               ) : (
                 <Line data={chartData} options={options} />
               )}
+<<<<<<< Updated upstream
 
               
 
+=======
+              <div className="chart-details mt-5 p-4 rounded shadow-sm">
+                <h4 className="chart-detail-title mb-3">Chart Breakdown</h4>
+                <div className="row text-start">
+                  <div className="col-md-4 mb-3 d-flex">
+                    <div className="legend-color" style={{ backgroundColor: 'blue' }}></div>
+                    <div>
+                      <strong>Historical Actual</strong><br />
+                      Real stock prices from the past.
+                    </div>
+                  </div>
+                  <div className="col-md-4 mb-3 d-flex">
+                    <div className="legend-color" style={{ backgroundColor: 'green' }}></div>
+                    <div>
+                      <strong>Historical Predicted</strong><br />
+                      Model’s estimate of past prices (for accuracy comparison).
+                    </div>
+                  </div>
+                  <div className="col-md-4 mb-3 d-flex">
+                    <div className="legend-color" style={{ backgroundColor: 'red' }}></div>
+                    <div>
+                      <strong>Future Predicted</strong><br />
+                      Model’s forecasted prices for the next {days} days.
+                    </div>
+                  </div>
+                </div>
+              </div>
+>>>>>>> Stashed changes
 
             </>
           } />

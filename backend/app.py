@@ -11,6 +11,7 @@ import os
 import pickle
 import requests
 from dotenv import load_dotenv
+import feedparser
 
 app = Flask(__name__)
 
@@ -39,10 +40,10 @@ models = {}
 scalers = {}
 for ticker in valid_tickers:
     models[ticker] = {
-        "lr": joblib.load(f"models/{ticker}_lr_model.pkl"),
-        "lstm": load_model(f"models/{ticker}_lstm_model.h5")
+        # "lr": joblib.load(f"models/{ticker}_lr_model.pkl"),
+        # "lstm": load_model(f"models/{ticker}_lstm_model.h5")
     }
-    scalers[ticker] = joblib.load(f"models/{ticker}_scaler.pkl")
+    # scalers[ticker] = joblib.load(f"models/{ticker}_scaler.pkl")
 
 def get_latest_data(ticker):
     cache_file = f"{ticker}_cache.pkl"
@@ -146,10 +147,19 @@ def predict():
 
 @app.route('/news', methods=['GET'])
 def get_news():
-    try:
-        if not MARKETAUX_API_KEY or not NEWSAPI_KEY:
-            return jsonify({"error": "Missing API keys"}), 500
+    feed_url = "https://finance.yahoo.com/news/rssindex" 
+    feed = feedparser.parse(feed_url)
+    articles = []
+    for entry in feed.entries:
+        articles.append({
+            "title": entry.get("title", "No Title"),
+            "description": entry.get("summary", "No Description"),
+            "url": entry.get("link", "#"),
+            "pubDate": entry.get("published", "No Date"),
+            "image": entry.get("media_content", [{}])[0].get("url", "https://via.placeholder.com/150") 
+        })
 
+<<<<<<< Updated upstream
         yahoo_news_response = requests.get(
             "https://api.marketaux.com/v1/news/all",
             params={"api_token": MARKETAUX_API_KEY, "limit": 10, "sources": "yahoo.com"},
@@ -193,6 +203,9 @@ def get_stock_data(symbol):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+=======
+    return jsonify(articles)
+>>>>>>> Stashed changes
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
