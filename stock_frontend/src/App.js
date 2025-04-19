@@ -13,6 +13,9 @@ import News from './components/News';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
+import welcomeVideo from './components/welcome_video.mp4';
+
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function App() {
@@ -25,7 +28,10 @@ function App() {
   });
   const [loading, setLoading] = useState(true);
   const [ticker, setTicker] = useState('TSLA'); // Default ticker
-  const [days, setDays] = useState(15); // Default prediction period (30 days)
+  const [days, setDays] = useState(15); // Default prediction period (15 days)
+  const [selectedDays, setSelectedDays] = useState(15); // Track selected days
+  const [selectedButton, setSelectedButton] = useState('TSLA'); // Default selected button
+
 
   const fetchData = (selectedTicker, predictionDays) => {
     setLoading(true);
@@ -36,20 +42,26 @@ function App() {
       })
       .catch(error => {
         console.error('Error fetching predictions:', error);
+        alert("Failed to load stock data. Please try again later.");
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    fetchData(ticker, days); // Fetch data on initial load and when ticker or days change
+    const timer = setTimeout(() => {
+      fetchData(ticker, days);
+    }, 500);
+    return () => clearTimeout(timer);
   }, [ticker, days]);
 
   const handleTickerChange = (selectedTicker) => {
     setTicker(selectedTicker);
+    setSelectedButton(selectedTicker); // Store selected ticker as the active button
   };
 
   const handleDaysChange = (selectedDays) => {
     setDays(selectedDays);
+    setSelectedDays(selectedDays); // Track selected days
   };
 
   const isDataValid = data.historical_dates.length > 0 && data.future_dates.length > 0;
@@ -71,7 +83,7 @@ function App() {
         backgroundColor: 'rgba(0, 255, 0, 0.2)',
         fill: false,
         tension: 0.1,
-        borderDash: [5, 5],
+        borderDash: [10, 5],
       },
       {
         label: 'Future Predicted Prices',
@@ -80,7 +92,7 @@ function App() {
         backgroundColor: 'rgba(255, 0, 0, 0.2)',
         fill: false,
         tension: 0.1,
-        borderDash: [5, 5],
+        borderDash: [10, 5],
       },
     ],
   } : { labels: [], datasets: [] };
@@ -110,7 +122,7 @@ function App() {
               <main>
                 <div className="welcome">
                   <video autoPlay muted loop id="welcomeVideo">
-                    <source src={require('./components/welcome_video.mp4')} type="video/mp4" />
+                    <source src={welcomeVideo} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                   <div className="overlay"></div>
@@ -124,14 +136,13 @@ function App() {
               <div className="col-12 shadow-sm p-3 mb-5 bg-white rounded" style={{ marginBottom: '20px', marginTop: '20px' }}>
                 <div className="row">
                   <div className="col-12 col-md-4">
-                    <label style={{ fontFamily: 'Poppins,sans-serif' }}>Select Stock:</label>
                     <div className="button-group" style={{ fontFamily: 'Poppins,sans-serif' }}>
-                      <button type="button" className={`btn m-1 ${ticker === 'TSLA' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('TSLA')}>Tesla</button>
-                      <button type="button" className={`btn m-1 ${ticker === 'AAPL' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('AAPL')}>Apple</button>
-                      <button type="button" className={`btn m-1 ${ticker === 'NVDA' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('NVDA')}>Nvidia</button>
-                      <button type="button" className={`btn m-1 ${ticker === 'AMZN' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('AMZN')}>Amazon</button>
-                      <button type="button" className={`btn m-1 ${ticker === 'GOOG' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('GOOGL')}>Google</button>
-                      <button type="button" className={`btn m-1 ${ticker === 'META' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('META')}>Meta</button>
+                      <button type="button" className={`btn m-1 ${selectedButton === 'TSLA' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('TSLA')}>Tesla</button>
+                      <button type="button" className={`btn m-1 ${selectedButton === 'AAPL' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('AAPL')}>Apple</button>
+                      <button type="button" className={`btn m-1 ${selectedButton === 'NVDA' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('NVDA')}>Nvidia</button>
+                      <button type="button" className={`btn m-1 ${selectedButton === 'AMZN' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('AMZN')}>Amazon</button>
+                      <button type="button" className={`btn m-1 ${selectedButton === 'GOOG' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('GOOGL')}>Google</button>
+                      <button type="button" className={`btn m-1 ${selectedButton === 'META' ? 'btn-info text-white' : 'btn-outline-info'}`} onClick={() => handleTickerChange('META')}>Meta</button>
                     </div>
                   </div>
 
@@ -142,12 +153,13 @@ function App() {
                         <button
                           key={day}
                           type="button"
-                          className={`btn m-1 ${days === day ? 'btn-info text-white' : 'btn-outline-info'}`}
+                          className={`btn m-1 ${selectedDays === day ? 'btn-info text-white' : 'btn-outline-info'}`}
                           onClick={() => handleDaysChange(day)}
                         >
                           {day} Days
                         </button>
                       ))}
+
                     </div>
                   </div>
                 </div>
@@ -165,6 +177,33 @@ function App() {
               ) : (
                 <Line data={chartData} options={options} />
               )}
+              <div className="chart-details mt-5 p-4 rounded shadow-sm">
+                <h4 className="chart-detail-title mb-3">Chart Breakdown</h4>
+                <div className="row text-start">
+                  <div className="col-md-4 mb-3 d-flex">
+                    <div className="legend-color" style={{ backgroundColor: 'blue' }}></div>
+                    <div>
+                      <strong>Historical Actual</strong><br />
+                      Real stock prices from the past.
+                    </div>
+                  </div>
+                  <div className="col-md-4 mb-3 d-flex">
+                    <div className="legend-color" style={{ backgroundColor: 'green' }}></div>
+                    <div>
+                      <strong>Historical Predicted</strong><br />
+                      Model’s estimate of past prices (for accuracy comparison).
+                    </div>
+                  </div>
+                  <div className="col-md-4 mb-3 d-flex">
+                    <div className="legend-color" style={{ backgroundColor: 'red' }}></div>
+                    <div>
+                      <strong>Future Predicted</strong><br />
+                      Model’s forecasted prices for the next {days} days.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </>
           } />
         </Routes>

@@ -1,0 +1,81 @@
+/*--------------------------------------------------------------
+  # About Section
+  --------------------------------------------------------------*/
+  
+h1, h2 {
+    color: #012970;
+}
+
+  .about .content {
+    background-color: color-mix(in srgb, var(--accent-color), transparent 95%);
+    padding: 40px;
+  }
+  
+  .about .content h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-transform: uppercase;
+  }
+  
+  .about .content h2 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .about .content p {
+    margin: 15px 0 30px 0;
+    line-height: 24px;
+  }
+  
+  .about .content .btn-read-more {
+    color: var(--contrast-color);
+    background: var(--accent-color);
+    line-height: 0;
+    padding: 15px 40px;
+    border-radius: 4px;
+    transition: 0.5s;
+    box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .about .content .btn-read-more span {
+    font-family: var(--default-font);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  
+  .about .content .btn-read-more i {
+    margin-left: 5px;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+  
+  .about :hover i {
+    transform: translateX(5px);
+  }
+
+.team-card:hover .team-img { 
+    transform: scale(1.05); 
+}
+
+.team-card:hover { box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15); 
+}
+
+.team-img { 
+width: 100%; 
+height: 500px; 
+object-fit: cover; 
+border-radius: 12px; 
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.how-it-works .card { border: 1px solid #eaeaea; border-radius: 16px; transition: transform 0.4s ease, box-shadow 0.3s ease; background-color: #f9f9f9; }
+
+.how-it-works .card:hover { transform: translateY(-8px); box-shadow: 0 0.5rem 1rem rgba(65, 84, 241, 0.15); border-color: var(--accent-color); }
+
+.how-it-works .card-title { color: var(--accent-color); }
+
+.fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s ease forwards; }
+
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
