@@ -39,10 +39,10 @@ models = {}
 scalers = {}
 for ticker in valid_tickers:
     models[ticker] = {
-        # "lr": joblib.load(f"models/{ticker}_lr_model.pkl"),
-        # "lstm": load_model(f"models/{ticker}_lstm_model.h5")
+        "lr": joblib.load(f"models/{ticker}_lr_model.pkl"),
+        "lstm": load_model(f"models/{ticker}_lstm_model.h5")
     }
-    # scalers[ticker] = joblib.load(f"models/{ticker}_scaler.pkl")
+    scalers[ticker] = joblib.load(f"models/{ticker}_scaler.pkl")
 
 def get_latest_data(ticker):
     cache_file = f"{ticker}_cache.pkl"
@@ -167,53 +167,7 @@ def get_news():
             "image": entry.get("media_content", [{}])[0].get("url", "https://via.placeholder.com/150") 
         })
 
-<<<<<<< Updated upstream
-        yahoo_news_response = requests.get(
-            "https://api.marketaux.com/v1/news/all",
-            params={"api_token": MARKETAUX_API_KEY, "limit": 10, "sources": "yahoo.com"},
-        )
-
-        google_news_response = requests.get(
-            "https://newsapi.org/v2/top-headlines",
-            params={"apiKey": NEWSAPI_KEY, "sources": "google-news"},
-        )
-
-        yahoo_news = yahoo_news_response.json().get("data", [])
-        google_news = google_news_response.json().get("articles", [])
-        news = yahoo_news + google_news
-
-        return jsonify(news)
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-    
-@app.route('/market_trend/<symbol>', methods=['GET'])
-def get_stock_data(symbol):
-    try:
-        stock = yf.Ticker(symbol)
-        stock_info = stock.history(period="5d")
-        
-        if len(stock_info) < 2:
-            return jsonify({'error': 'Not enough data available'}), 500
-        
-        price_today = stock_info['Close'].iloc[-1]
-        price_yesterday = stock_info['Close'].iloc[-2]
-        change = ((price_today - price_yesterday) / price_yesterday) * 100
-        
-        stock_data = {
-            'symbol': symbol,
-            'price': price_today,
-            'change': change,
-            'marketCap': stock.info['marketCap']
-        }
-        
-        return jsonify(stock_data)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-=======
     return jsonify(articles)
->>>>>>> Stashed changes
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
