@@ -63,31 +63,6 @@ const MarketTrend = () => {
         </div>
 
         <table className="table table-striped table-bordered">
-          <thead className="thead-dark">
-            <tr>
-              {/* <th>Symbol</th> */}
-              <th>Name</th>
-              <th>Price</th>
-              <th>Change</th>
-              <th>Market Cap</th>
-            </tr>
-          </thead>
-          <tbody>
-            {stocks.map((stock, index) => (
-              <tr key={index}>
-                <td className="fw-bold">{stock.symbol}</td>
-                {/* <td>{stock.name}</td> */}
-                <td>${stock.price.toFixed(2)}</td>
-                <td className={stock.change > 0 ? "text-success" : "text-danger"}>
-                  {stock.change > 0 ? `+${stock.change.toFixed(2)}` : stock.change.toFixed(2)}
-                </td>
-                <td>{(stock.marketCap / 1e9).toFixed(2)}B</td> {/* Convert to billions */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <table className="table table-striped table-bordered">
         <thead className="thead-dark">
           <tr>
             <th>Symbol</th>

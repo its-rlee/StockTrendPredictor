@@ -152,6 +152,27 @@ def predict():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/market_trend/<symbol>', methods=['GET'])
+def get_market_trend(symbol):
+    try:
+        stock = yf.Ticker(symbol)
+        info = stock.info
+
+        # Historical data for the past 5 days (you can adjust this)
+        hist = stock.history(period="5d")['Close'].tolist()
+
+        response = {
+            "symbol": symbol,
+            "name": info.get("longName", f"{symbol} Inc."),
+            "price": info.get("currentPrice", 0.0),
+            "change": info.get("regularMarketChange", 0.0),
+            "marketCap": info.get("marketCap", 0),
+            "history": hist
+        }
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/news', methods=['GET'])
 def get_news():
