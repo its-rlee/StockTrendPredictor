@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom'; 
 import logo from '../../src/header_logo.png';
 
 const Header = () => {
@@ -16,18 +17,26 @@ const Header = () => {
           <div className="row w-100">
             <div className="col-lg-2 col-6">
               <div className="header-logo">
-                <a href="index.html">
+                <NavLink to="/">
                   <img src={logo} alt="Market Logo" className="logo-img" />
-                </a>
+                </NavLink>
               </div>
             </div>
             <div className="col-lg-10 col-6 d-flex justify-content-end">
               <nav id="navmenu" className={`navmenu ${isMobileNavVisible ? 'mobile-nav-active' : ''}`}>
-                <ul className="">
-                  <li><a href="/" className="active outline-none">Home</a></li>
-                  <li><a href="/about">About</a></li>
-                  <li><a href="/market_trend">Market Trend</a></li>
-                  <li><a href="/news">News</a></li>
+                <ul className="d-flex gap-3 list-unstyled m-0">
+                  <li>
+                    <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''}>About</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/market_trend" className={({ isActive }) => isActive ? 'active' : ''}>Market Trend</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/news" className={({ isActive }) => isActive ? 'active' : ''}>News</NavLink>
+                  </li>
                 </ul>
               </nav>
               <div className="mobile-nav-toggle" onClick={toggleMobileNav}>

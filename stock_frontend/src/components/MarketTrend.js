@@ -46,11 +46,11 @@ const MarketTrend = () => {
         </div>
         <h3>Trending Now</h3>
         {error && <p>{error}</p>} {/* Display error message if there's an issue */}
-        <div className="row">
+        <div className="row stock-card">
           {stocks.map((stock, index) => (
             <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
               <div className="border shadow p-2 rounded">
-                <div className="stock-symbol"><h5>Symbol</h5>{stock.symbol}</div>
+                <div className="stock-symbol">{stock.symbol}</div>
                 <div className="stock-name">{stock.name}</div>
                 <div className="stock-price">{stock.price}</div>
                 <div className={`stock-change ${stock.change > 0 ? 'text-success' : 'text-danger'}`}>
@@ -62,8 +62,8 @@ const MarketTrend = () => {
           ))}
         </div>
 
-        <table className="table table-striped table-bordered">
-        <thead className="thead-dark">
+        <table className="table table-striped table-bordered align-middle text-center shadow-sm">
+        <thead className="table-dark">
           <tr>
             <th>Symbol</th>
             <th>Name</th>
@@ -76,9 +76,9 @@ const MarketTrend = () => {
         <tbody>
           {stocks.map((stock, index) => (
             <tr key={index}>
-              <td className="fw-bold">{stock.symbol}</td>
-              <td>{stock.name}</td>
-              <td style={{ width: "120px" }}>
+              <td className="fw-bold text-primary">{stock.symbol}</td>
+              <td className="text-start">{stock.name}</td>
+              <td style={{ width: "120px", height: "30px" }}>
                 <Line
                   data={{
                     labels: stock.history?.map((_, i) => i), // Mock x-axis (time series)
@@ -102,11 +102,11 @@ const MarketTrend = () => {
                   height={25}
                 />
               </td>
-              <td>${stock.price.toFixed(2)}</td>
+              <td className="text-end">${stock.price.toFixed(2)}</td>
               <td className={stock.change > 0 ? "text-success" : "text-danger"}>
                 {stock.change > 0 ? `+${stock.change.toFixed(2)}` : stock.change.toFixed(2)}
               </td>
-              <td>{(stock.marketCap / 1e9).toFixed(2)}B</td> {/* Convert to billions */}
+              <td className="text-end">{(stock.marketCap / 1e9).toFixed(2)}B</td> {/* Convert to billions */}
             </tr>
           ))}
         </tbody>
