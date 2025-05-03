@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.32110eb5.css",
+    "main.js": "/static/js/main.ef484313.js",
+    "static/media/welcome_video.mp4": "/static/media/welcome_video.91f3f977b99c27cc4d26.mp4",
+    "static/media/header_logo.png": "/static/media/header_logo.ebd0f269e3d3f3622354.png",
+    "static/media/trung.jpg": "/static/media/trung.e1a26fdcd285c75589bd.jpg",
+    "static/media/Ting.jpg": "/static/media/Ting.6d56c45a6a65222e705b.jpg",
+    "static/media/Hart.jpg": "/static/media/Hart.93f5e909f0128322b73f.jpg",
+    "index.html": "/index.html",
+    "main.32110eb5.css.map": "/static/css/main.32110eb5.css.map",
+    "main.ef484313.js.map": "/static/js/main.ef484313.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.32110eb5.css",
+    "static/js/main.ef484313.js"
+  ]
+}
