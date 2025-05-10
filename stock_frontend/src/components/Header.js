@@ -4,12 +4,10 @@ import logo from '../../src/header_logo.png';
 
 const Header = () => {
   const [isMobileNavVisible, setMobileNavVisible] = useState(false);
+  const toggleMobileNav = () => setMobileNavVisible(prev => !prev);
 
-  const toggleMobileNav = () => {
-    setMobileNavVisible(!isMobileNavVisible);
-    document.body.classList.toggle('mobile-nav-active');
-  };
 
+ 
   return (
     <header className=''>
       <div id="header" className="header fixed-top ">
@@ -23,8 +21,13 @@ const Header = () => {
               </div>
             </div>
             <div className="col-lg-10 col-6 d-flex justify-content-end">
+              {/* toggle navbar */}
+              <div className="mobile-nav-toggle  d-lg-none" onClick={toggleMobileNav}>
+                <i className={`bi ${isMobileNavVisible ? 'bi-x' : 'bi-list'}`}></i>
+              </div>
+
               <nav id="navmenu" className={`navmenu ${isMobileNavVisible ? 'mobile-nav-active' : ''}`}>
-                <ul className="d-flex gap-3 list-unstyled m-0">
+                <ul className={`d-lg-flex gap-3 list-unstyled m-0`}>
                   <li>
                     <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>
                   </li>
@@ -39,9 +42,7 @@ const Header = () => {
                   </li>
                 </ul>
               </nav>
-              <div className="mobile-nav-toggle" onClick={toggleMobileNav}>
-                <i className={`bi ${isMobileNavVisible ? 'bi-x' : 'bi-list'}`}></i>
-              </div>
+            
             </div>
           </div>
         </div>
