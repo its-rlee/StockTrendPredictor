@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -13,11 +13,7 @@ import requests
 from dotenv import load_dotenv
 import feedparser
 
-app = Flask(__name__)
-
-@app.route("/")
-def Home():
-    return "Welcome to the Stock Trend Predictor API!"
+app = Flask(__name__, static_folder='../static')
 
 CORS(app)
 
@@ -190,5 +186,13 @@ def get_news():
 
     return jsonify(articles)
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_frontend(path):
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, 'index.html')
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
