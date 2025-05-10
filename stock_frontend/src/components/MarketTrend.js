@@ -19,7 +19,7 @@ const MarketTrend = () => {
         // Define stock symbols to fetch data for
         const symbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'NVDA']; // Update with your desired stock symbols
         const stockDataPromises = symbols.map((symbol) =>
-          axios.get(`http://localhost:5000/market_trend/${symbol}`)
+          axios.get(`/market_trend/${symbol}`)
         );
 
         const responses = await Promise.all(stockDataPromises);
@@ -34,35 +34,35 @@ const MarketTrend = () => {
   }, []);
 
   return (
-    
-      <div class="container">
-        <div className="market-trend pt-5">
-          <div className="container">
-            <h1>Market Trend</h1>
-            <p>Stay updated with the latest market trends and insights. Our market trend analysis provides you with the information you need to stay ahead in the stock market.</p>
-            <p>We analyze various market indicators and trends to give you a comprehensive view of the market.</p>
-            <p>Explore our market trend reports and stay informed about the latest developments in the stock market.</p>
-          </div>
-        </div>
-        <h3>Trending Now</h3>
-        {error && <p>{error}</p>} {/* Display error message if there's an issue */}
-        <div className="row stock-card">
-          {stocks.map((stock, index) => (
-            <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
-              <div className="border shadow p-2 rounded">
-                <div className="stock-symbol">{stock.symbol}</div>
-                <div className="stock-name">{stock.name}</div>
-                <div className="stock-price">{stock.price}</div>
-                <div className={`stock-change ${stock.change > 0 ? 'text-success' : 'text-danger'}`}>
-                  {stock.change > 0 ? `+${stock.change}` : stock.change}
-                </div>
-                <div className="stock-marketCap">Market Cap: {stock.marketCap}</div>
-              </div>
-            </div>
-          ))}
-        </div>
 
-        <table className="table table-striped table-bordered align-middle text-center shadow-sm">
+    <div class="container">
+      <div className="market-trend pt-5">
+        <div className="container">
+          <h1>Market Trend</h1>
+          <p>Stay updated with the latest market trends and insights. Our market trend analysis provides you with the information you need to stay ahead in the stock market.</p>
+          <p>We analyze various market indicators and trends to give you a comprehensive view of the market.</p>
+          <p>Explore our market trend reports and stay informed about the latest developments in the stock market.</p>
+        </div>
+      </div>
+      <h3>Trending Now</h3>
+      {error && <p>{error}</p>} {/* Display error message if there's an issue */}
+      <div className="row stock-card">
+        {stocks.map((stock, index) => (
+          <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
+            <div className="border shadow p-2 rounded">
+              <div className="stock-symbol">{stock.symbol}</div>
+              <div className="stock-name">{stock.name}</div>
+              <div className="stock-price">{stock.price}</div>
+              <div className={`stock-change ${stock.change > 0 ? 'text-success' : 'text-danger'}`}>
+                {stock.change > 0 ? `+${stock.change}` : stock.change}
+              </div>
+              <div className="stock-marketCap">Market Cap: {stock.marketCap}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <table className="table table-striped table-bordered align-middle text-center shadow-sm">
         <thead className="table-dark">
           <tr>
             <th>Symbol</th>

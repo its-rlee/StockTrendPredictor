@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../App.css'; 
+import '../App.css';
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -11,7 +11,7 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/news');
+        const response = await axios.get('/news');
         setNews(response.data);
       } catch (err) {
         setError('Failed to fetch news. Please try again later.');
@@ -68,7 +68,7 @@ const News = () => {
           </div>
         </div>
 
-        
+
       )}
     </div>
   );

@@ -35,7 +35,7 @@ function App() {
 
   const fetchData = (selectedTicker, predictionDays) => {
     setLoading(true);
-    axios.get(`http://localhost:5000/predict?ticker=${selectedTicker}&days=${predictionDays}`)
+    axios.get(`/predict?ticker=${selectedTicker}&days=${predictionDays}`)
       .then(response => {
         setData(response.data);
         setLoading(false);
