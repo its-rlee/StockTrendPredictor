@@ -21,6 +21,7 @@ CORS(app)
 # Load API keys from .env file
 load_dotenv()
 
+PORT = os.getenv("PORT")
 MARKETAUX_API_KEY = os.getenv("MARKETAUX_API_KEY")
 NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")
 
@@ -194,5 +195,5 @@ def serve_frontend(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
+    port = PORT if PORT else 5000
     app.run(debug=False, host='0.0.0.0', port=port)
